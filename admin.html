@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Knowledge Management SOP</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Admin Styles -->
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-card">
+            <h1>Knowledge Management (SOP)<br><span style="font-size: 0.7em;">Admin Module</span></h1>
+            <p style="margin-bottom: 20px; color: var(--color-text-secondary);">เข้าสู่ระบบจัดการ Knowledge Management</p>
+            <div id="loginError" class="login-error"></div>
+            <input type="password" id="adminPassword" class="admin-input large" placeholder="รหัสผ่าน (default: admin1234)">
+            <button class="admin-btn primary" style="width: 100%; justify-content: center;" onclick="adminLogin()">
+                เข้าสู่ระบบ <i class="fas fa-arrow-right"></i>
+            </button>
+            <p style="margin-top: 20px; font-size: 12px; color: var(--color-text-muted);">
+                รหัสผ่านเริ่มต้น: admin1234<br>สามารถเปลี่ยนได้ในหน้าแดชบอร์ด
+            </p>
+        </div>
+    </div>
+
+    <!-- Admin App (Hidden initially) -->
+    <div class="admin-app" id="adminApp" style="display: none;">
+        
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-sidebar-header">
+                <div class="brand-text">Knowledge Management<br><span style="font-size: 0.85em; opacity: 0.8;">Standard Operating Procedure (SOP)</span></div>
+            </div>
+            
+            <div class="admin-sidebar-content">
+                <button class="admin-btn secondary" style="width: 100%; justify-content: center; margin-bottom: 15px;" onclick="showDashboard()">
+                    <i class="fas fa-home"></i> แดชบอร์ดหลัก
+                </button>
+                
+                <div id="adminSidebarCategories">
+                    <!-- Categories and articles loaded here -->
+                </div>
+            </div>
+
+            <div style="padding: 15px; border-top: 1px solid var(--color-border);">
+                <a href="index.html" target="_blank" class="admin-btn secondary" style="width: 100%; justify-content: center; margin-bottom: 10px;">
+                    <i class="fas fa-external-link-alt"></i> ดูหน้าเว็บจริง
+                </a>
+                <button class="admin-btn danger" style="width: 100%; justify-content: center;" onclick="adminLogout()">
+                    <i class="fas fa-sign-out-alt"></i> ออกจากระบบ
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="admin-main" id="adminContent">
+            <!-- Dynamic content loaded here -->
+        </main>
+    </div>
+
+    <!-- Modals & Toasts -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-box">
+            <h3 id="modalTitle">Title</h3>
+            <p id="modalMessage">Message</p>
+            <div class="form-actions" style="margin-top: 0;">
+                <button class="admin-btn secondary" onclick="closeModal()">ยกเลิก</button>
+                <button class="admin-btn danger" onclick="confirmModal()">ยืนยัน</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-storage-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+
+    <!-- Scripts -->
+    <script src="js/articles.js"></script> <!-- Load defaults first -->
+    <script src="js/storage.js"></script>
+    <script src="js/admin.js"></script>
+
+    <script>
+        // Init logic
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('loginScreen').style.display = 'none';
+            // Wait for DB loading
+            document.body.insertAdjacentHTML('beforeend', `
+                <div id="adminLoadingOverlay" style="position:fixed;inset:0;background:var(--color-bg);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;color:var(--color-primary);">
+                    <i class="fas fa-spinner fa-spin fa-2x"></i>
+                    <p style="margin-top:10px;">กำลังเชื่อมต่อฐานข้อมูล...</p>
+                </div>
+            `);
+
+            Storage.initialize(() => {
+                document.getElementById('adminLoadingOverlay').remove();
+                
+                // If it's completely empty DB, populate with defaults
+                if (Object.keys(Storage.getArticles()).length === 0) {
+                    Storage.saveArticles(typeof ARTICLES !== 'undefined' ? ARTICLES : {});
+                    Storage.saveSidebar(typeof SIDEBAR_STRUCTURE !== 'undefined' ? SIDEBAR_STRUCTURE : []);
+                    Storage.saveFAQ(typeof FAQ_DATA !== 'undefined' ? FAQ_DATA : []);
+                }
+                
+                document.getElementById('loginScreen').style.display = 'flex';
+            });
+            
+            document.addEventListener('storageUpdated', () => {
+                if (adminAuthenticated && editingArticleId === null) {
+                    loadAdminSidebar();
+                    showDashboard();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
