@@ -14,6 +14,7 @@ const firebaseConfig = {
 try {
     firebase.initializeApp(firebaseConfig);
     window.db = firebase.firestore();
+
     window.storage = firebase.storage();
     console.log("Firebase initialized successfully");
 } catch(e) {

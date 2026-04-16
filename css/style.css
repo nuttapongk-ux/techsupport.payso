@@ -285,24 +285,24 @@ body {
 
 /* Headings */
 .article-body h2 {
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 700;
   color: var(--text-dark);
-  margin: 56px 0 20px;
+  margin: 40px 0 16px;
   padding-bottom: 12px;
   border-bottom: 2px solid var(--payso-light);
 }
 .article-body h3 {
-  font-size: 20px;
+  font-size: 19px;
   font-weight: 600;
   color: var(--text-dark);
-  margin: 36px 0 14px;
+  margin: 24px 0 12px;
 }
 .article-body h4 {
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--text-dark);
-  margin: 24px 0 10px;
+  margin: 18px 0 8px;
 }
 
 /* Lists */
@@ -318,35 +318,29 @@ body {
 /* Tables */
 .article-body table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  margin: 20px 0 28px;
+  border-collapse: collapse;
+  margin: 16px 0 24px;
   font-size: 14px;
-  border-radius: 12px;
+  border-radius: 8px;
   overflow: hidden;
   border: 1px solid var(--border-color);
 }
-.article-body thead th {
-  background: var(--payso-primary);
-  color: white;
+.article-body th {
+  background: var(--payso-light);
+  color: var(--text-dark);
   font-weight: 600;
-  padding: 14px 18px;
+  padding: 12px 16px;
   text-align: left;
   font-size: 13px;
-  letter-spacing: 0.01em;
+  border: 1px solid var(--border-color);
 }
-.article-body thead th:first-child { border-radius: 12px 0 0 0; }
-.article-body thead th:last-child { border-radius: 0 12px 0 0; }
-.article-body tbody td {
-  padding: 12px 18px;
-  border-bottom: 1px solid var(--border-color);
+.article-body td {
+  padding: 12px 16px;
+  border: 1px solid var(--border-color);
   vertical-align: top;
   color: var(--text-gray);
 }
-.article-body tbody tr:nth-child(even) { background: var(--payso-light); }
-.article-body tbody tr:last-child td { border-bottom: none; }
-.article-body tbody tr:last-child td:first-child { border-radius: 0 0 0 12px; }
-.article-body tbody tr:last-child td:last-child { border-radius: 0 0 12px 0; }
+.article-body tr:nth-child(even) { background: #fafcff; }
 
 /* Code / formula blocks */
 .article-body .code-block {

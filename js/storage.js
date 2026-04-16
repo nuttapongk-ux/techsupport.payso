@@ -55,7 +55,11 @@ const Storage = {
     getArticles() { return _localData.articles; },
     saveArticles(articles) {
         _localData.articles = articles;
-        window.db.collection('helpcenter').doc('data').set({ articles }, { merge: true }).catch(e => console.error(e));
+        const docRef = window.db.collection('helpcenter').doc('data');
+        docRef.update({ articles }).catch(e => {
+            if (e.code === 'not-found') docRef.set({ articles }, { merge: true });
+            else console.error(e);
+        });
     },
     getArticle(id) { return this.getArticles()[id] || null; },
     saveArticle(article) {
@@ -73,21 +77,33 @@ const Storage = {
     getSidebar() { return _localData.sidebar; },
     saveSidebar(sidebar) {
         _localData.sidebar = sidebar;
-        window.db.collection('helpcenter').doc('data').set({ sidebar }, { merge: true }).catch(e => console.error(e));
+        const docRef = window.db.collection('helpcenter').doc('data');
+        docRef.update({ sidebar }).catch(e => {
+            if (e.code === 'not-found') docRef.set({ sidebar }, { merge: true });
+            else console.error(e);
+        });
     },
 
     // ---- FAQ ----
     getFAQ() { return _localData.faq; },
     saveFAQ(faq) {
         _localData.faq = faq;
-        window.db.collection('helpcenter').doc('data').set({ faq }, { merge: true }).catch(e => console.error(e));
+        const docRef = window.db.collection('helpcenter').doc('data');
+        docRef.update({ faq }).catch(e => {
+            if (e.code === 'not-found') docRef.set({ faq }, { merge: true });
+            else console.error(e);
+        });
     },
 
     // ---- Settings ----
     getSettings() { return _localData.settings; },
     saveSettings(settings) {
         _localData.settings = settings;
-        window.db.collection('helpcenter').doc('data').set({ settings }, { merge: true }).catch(e => console.error(e));
+        const docRef = window.db.collection('helpcenter').doc('data');
+        docRef.update({ settings }).catch(e => {
+            if (e.code === 'not-found') docRef.set({ settings }, { merge: true });
+            else console.error(e);
+        });
     },
 
     // ---- Maintenance ----
