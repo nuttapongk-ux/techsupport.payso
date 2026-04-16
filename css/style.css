@@ -272,8 +272,9 @@ body {
   padding-bottom: 32px;
 }
 .article-body p {
-  margin-bottom: 12px;
-  line-height: 1.55;
+  margin-top: 0;
+  margin-bottom: 6px;
+  line-height: 1.5;
   color: var(--text-gray);
 }
 .article-body a {
@@ -310,8 +311,8 @@ body {
   margin: 14px 0 24px 24px;
 }
 .article-body li {
-  margin-bottom: 6px;
-  line-height: 1.55;
+  margin-bottom: 4px;
+  line-height: 1.5;
   color: var(--text-gray);
 }
 
@@ -539,7 +540,7 @@ details.faq-item .faq-body {
   color: var(--text-gray);
   line-height: 1.7;
 }
-details.faq-item .faq-body p { margin-bottom: 10px; }
+details.faq-item .faq-body p { margin-top: 0; margin-bottom: 10px; }
 details.faq-item .faq-body ul { margin: 8px 0 10px 20px; font-size: 14px; }
 details.faq-item .faq-body table { font-size: 13px; }
 
